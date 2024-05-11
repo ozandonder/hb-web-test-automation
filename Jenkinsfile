@@ -30,5 +30,6 @@ pipeline {
                 SUCCESS_RATE = sh(returnStdout: true, script: "echo \$(( (($TOTAL_PASSED * 100) / $TOTAL_SCENARIO) + ( ($TOTAL_PASSED * 100) % $TOTAL_SCENARIO > 0 ) ))")
                 }
         }
-    }
+    }   
+}
 }
