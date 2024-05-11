@@ -27,7 +27,7 @@ pipeline {
                       slackSend(
                               channel: "hb-web-test-automation",
                               color: "#7aabcc",
-                              message:":information_source: Hb Web Regression job has been started at ${params.Environment}. => (<${env.JOB_URL}${BUILD_NUMBER}|Build Link>)"
+                              message:":information_source: Hb Web Regression job has been started at ${params.ProjectEnv}. => (<${env.JOB_URL}${BUILD_NUMBER}|Build Link>)"
                       )
                   }
               }
