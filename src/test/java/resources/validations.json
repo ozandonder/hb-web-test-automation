@@ -1,0 +1,12 @@
+{
+  "tr": {
+    "product_detail_page": {
+      "thank_you_message_for_review_thumps": "Teşekkür Ederiz."
+    }
+  },
+  "en": {
+    "product_detail_page": {
+      "thank_you_message_for_review_thumps": "We thank you."
+    }
+  }
+}

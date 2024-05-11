@@ -1,0 +1,14 @@
+{
+  "tr": {
+    "home_page": {
+      "log_in_text": "Giriş Yap",
+      "search_box_default_valur": "Ürün, kategori veya marka ara"
+    }
+  },
+  "en": {
+    "home_page": {
+      "log_in_text": "Login",
+      "search_box_default_valur": "Search for a product, category or brand"
+    }
+  }
+}
