@@ -72,7 +72,7 @@ pipeline {
                         slackSend(
                           channel: "hb-web-test-automation",
                           color: "#70FD01",
-                          message: ":white_tick: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test success"
+                          message: ":pass: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test success"
                         )
                       }
                     }
