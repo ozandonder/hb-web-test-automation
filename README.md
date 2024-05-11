@@ -1,4 +1,4 @@
-# HP Web Test Automation
+# HB Web Test Automation
 
 ## Tools
 

@@ -21,6 +21,17 @@ pipeline {
                   description: 'Select your branch'
   }
   stages {
+    stage('Send Slack Notification'){
+              steps{
+                  script{
+                      slackSend(
+                              channel: "hb-web-test-automation",
+                              color: "#7aabcc",
+                              message:":information_source: Hb Web Regression job has been started at ${params.Environment}. => (<${env.JOB_URL}${BUILD_NUMBER}|Build Link>)"
+                      )
+                  }
+              }
+    }
     stage('Checkout') {
       steps {
         checkout([$class: 'GitSCM',
@@ -32,7 +43,7 @@ pipeline {
           gitTool: 'default',
           submoduleCfg: [],
           userRemoteConfigs: [
-            [credentialsId: 'ozan-github', url: 'https://github.com/ozandonder/hp-web-test-automation.git']
+            [credentialsId: 'ozan-github', url: 'https://github.com/ozandonder/hb-web-test-automation.git']
           ]
         ])
       }
@@ -55,7 +66,132 @@ pipeline {
             ]
           ])
         }
-      }
+        success {
+              script {
+                slackSend(
+                  channel: "hb-web-test-automation",
+                  color: "#70FD01",
+                  message: ":greate_job: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test success"
+                )
+              }
+            }
+            failure {
+              script {
+                slackSend(
+                  channel: "hb-web-test-automation",
+                  color: "#FF0000",
+                  message: ":error_freepik: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test failed"
+                )
+              }
+            }
+            aborted {
+              script {
+                slackSend(
+                  channel: "hb-web-test-automation",
+                  color: "#BCBCBC",
+                  message: ":interrobang: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test aborted"
+                )
+              }
+            }
+      }pipeline {
+         agent any
+         tools {
+           maven 'mvn-3.9.6'
+         }
+         parameters {
+           choice(name: 'Headless', choices: ['false', 'true'], description: '')
+           choice(name: 'Browser', choices: ['chrome', 'remote-chrome', 'remote-firefox'], description: '')
+           string(name: 'ProjectEnv', defaultValue: 'prod', description: '')
+           string(name: 'ThreadCount', defaultValue: '1', description: '')
+           string(name: 'Lang', defaultValue: 'tr', description: '')
+                   gitParameter name: 'BRANCH_TAG',
+                         type: 'PT_BRANCH',
+                         defaultValue: 'master',
+                         selectedValue: 'DEFAULT',
+                         quickFilterEnabled: true,
+                         sortMode: 'DESCENDING_SMART',
+                         tagFilter: '*',
+                         branchFilter: 'origin/(.*)',
+                         useRepository: '.*.git',
+                         description: 'Select your branch'
+         }
+         stages {
+           stage('Send Slack Notification'){
+                     steps{
+                         script{
+                             slackSend(
+                                     channel: "hb-web-test-automation",
+                                     color: "#7aabcc",
+                                     message:":information_source: HB Web Regression job has been started at ${params.Environment}. => (<${env.JOB_URL}${BUILD_NUMBER}|Build Link>)"
+                             )
+                         }
+                     }
+           }
+           stage('Checkout') {
+             steps {
+               checkout([$class: 'GitSCM',
+                 branches: [
+                   [name: "${params.BRANCH_TAG}"]
+                 ],
+                 doGenerateSubmoduleConfigurations: false,
+                 extensions: [],
+                 gitTool: 'default',
+                 submoduleCfg: [],
+                 userRemoteConfigs: [
+                   [credentialsId: 'ozan-github', url: 'https://github.com/ozandonder/hb-web-test-automation.git']
+                 ]
+               ])
+             }
+           }
+           stage('Running Test') {
+             steps {
+                 sh """
+                    mvn clean test -Dtest="CucumberRunnerTest" -DthreadCount=${ThreadCount} -Dbrowser=${Browser} -DprojectEnv=${ProjectEnv} -Dheadless=${Headless} -Dlang=${Lang}
+                    """
+             }
+             post {
+               always {
+                 allure([
+                   includeProperties: false,
+                   jdk: '',
+                   properties: [],
+                   reportBuildPolicy: 'ALWAYS',
+                   results: [
+                     [path: 'target/allure-results']
+                   ]
+                 ])
+               }
+               success {
+                     script {
+                       slackSend(
+                         channel: "hb-web-test-automation",
+                         color: "#70FD01",
+                         message: ":greate_job: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test success"
+                       )
+                     }
+                   }
+                   failure {
+                     script {
+                       slackSend(
+                         channel: "hb-web-test-automation",
+                         color: "#FF0000",
+                         message: ":error_freepik: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test failed"
+                       )
+                     }
+                   }
+                   aborted {
+                     script {
+                       slackSend(
+                         channel: "hb-web-test-automation",
+                         color: "#BCBCBC",
+                         message: ":interrobang: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test aborted"
+                       )
+                     }
+                   }
+             }
+           }
+         }
+       }
     }
   }
 }

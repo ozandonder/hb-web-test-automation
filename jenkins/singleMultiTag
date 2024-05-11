@@ -33,7 +33,7 @@ pipeline {
           gitTool: 'default',
           submoduleCfg: [],
           userRemoteConfigs: [
-            [credentialsId: 'ozan-github', url: 'https://github.com/ozandonder/hp-web-test-automation.git']
+            [credentialsId: 'ozan-github', url: 'https://github.com/ozandonder/hb-web-test-automation.git']
           ]
         ])
       }
