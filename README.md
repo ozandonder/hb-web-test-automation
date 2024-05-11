@@ -52,7 +52,11 @@
 
 ## Project Structure
 
-```                   
+```  
+├── jenkins
+│   ├── regression  
+│   ├── singleMultiTag  
+│   ├── smoke                   
 ├── src
 │   ├── test                      
 │   │   ├── java
