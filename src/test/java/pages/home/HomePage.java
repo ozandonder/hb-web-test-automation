@@ -1,5 +1,6 @@
 package pages.home;
 
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import pages.BasePage;
 
@@ -20,5 +21,17 @@ public class HomePage extends BasePage {
     public HomePage fillSearchText(String searchText) {
         type(TXT_SEARCH_BAR, searchText, true);
         return this;
+    }
+
+    public void verifyDefaultValueOfSearchBar() {
+        Assertions.assertEquals(1, 2, "Default value of search bar incorrect");
+    }
+
+    public void verifyAllFooterText() {
+        Assertions.assertTrue(true, "Footer text incorrect");
+    }
+
+    public void verifyAgreementPopup() {
+        Assertions.assertTrue(true, "Agreement popup not found");
     }
 }

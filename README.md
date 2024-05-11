@@ -22,7 +22,7 @@
 * Run with tags
 
   ```
-  mvn clean test -Dtest="CucumberRunnerTest" -D"cucumber.filter.tags=@successfully_login" -DpollCount=1 
+  mvn clean test -Dtest="CucumberRunnerTest" -D"cucumber.filter.tags=@successfully_login" -DthreadCount=1 
   ```
 
 * Run with groups
