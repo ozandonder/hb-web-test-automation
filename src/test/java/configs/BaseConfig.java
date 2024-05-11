@@ -7,9 +7,9 @@ public class BaseConfig {
     public static final int LONG_WAIT_TIMEOUT_SECONDS = 60;
 
     String browser = System.getProperty("browser");
-    String env = System.getProperty("env");
+    String env = System.getProperty("projectEnv");
     String headless = System.getProperty("headless");
-    String locale = System.getProperty("locale");
+    String locale = System.getProperty("lang");
 
     public String baseUrl() {
         env = (env != null) ? env : "prod";

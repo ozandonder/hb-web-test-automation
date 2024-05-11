@@ -5,22 +5,22 @@ pipeline {
   }
   parameters {
     string(name: 'TagName', defaultValue: "@smoke", description: 'Multiple Tag--> @verify_search_bar_default_value,@verify_all_footer_text , Single Tag--> @smoke')
-    choice(name: 'Headless', choices: ['true', 'false'], description: '')
+    choice(name: 'Headless', choices: ['false', 'true'], description: '')
     choice(name: 'Browser', choices: ['chrome', 'remote-chrome', 'firefox'], description: '')
-    string(name: 'Environment', defaultValue: 'prod', description: '')
+    string(name: 'ProjectEnv', defaultValue: 'prod', description: '')
     string(name: 'ThreadCount', defaultValue: '1', description: '')
-    string(name: 'Locale', defaultValue: 'tr', description: '')
+    string(name: 'Lang', defaultValue: 'tr', description: '')
     string(name: 'Branch', defaultValue: 'master', description: '')
-    gitParameter name: 'BRANCH_TAG',
-      type: 'PT_BRANCH',
-      defaultValue: 'master',
-      selectedValue: 'DEFAULT',
-      quickFilterEnabled: true,
-      sortMode: 'DESCENDING_SMART',
-      tagFilter: '*',
-      branchFilter: 'origin/(.*)',
-      useRepository: '.*.git',
-      description: 'Select your branch'
+            gitParameter name: 'BRANCH_TAG',
+                  type: 'PT_BRANCH',
+                  defaultValue: 'master',
+                  selectedValue: 'DEFAULT',
+                  quickFilterEnabled: true,
+                  sortMode: 'DESCENDING_SMART',
+                  tagFilter: '*',
+                  branchFilter: 'origin/(.*)',
+                  useRepository: '.*.git',
+                  description: 'Select your branch'
   }
   stages {
     stage('Checkout') {
@@ -42,7 +42,7 @@ pipeline {
     stage('Running Test') {
       steps {
           sh """
-             mvn clean test -Dtest="CucumberRunnerTest" -D"cucumber.filter.tags=${TagName}" -DthreadCount=${ThreadCount} -Dbrowser=${Browser} -Denv=${Environment} -Dheadless=${Headless} -Dlocale=${Locale}
+             mvn clean test -Dtest="CucumberRunnerTest" -D"cucumber.filter.tags=${TagName}" -DthreadCount=${ThreadCount} -Dbrowser=${Browser} -DprojectEnv=${ProjectEnv} -Dheadless=${Headless} -Dlang=${Lang}
              """
       }
       post {
