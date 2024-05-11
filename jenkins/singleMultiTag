@@ -10,7 +10,6 @@ pipeline {
     string(name: 'ProjectEnv', defaultValue: 'prod', description: '')
     string(name: 'ThreadCount', defaultValue: '1', description: '')
     string(name: 'Lang', defaultValue: 'tr', description: '')
-    string(name: 'Branch', defaultValue: 'master', description: '')
             gitParameter name: 'BRANCH_TAG',
                   type: 'PT_BRANCH',
                   defaultValue: 'master',
