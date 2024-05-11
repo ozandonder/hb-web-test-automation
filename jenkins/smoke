@@ -21,6 +21,17 @@ pipeline {
                   description: 'Select your branch'
   }
   stages {
+   stage('Send Slack Notification'){
+                steps{
+                    script{
+                        slackSend(
+                                channel: "hb-web-test-automation",
+                                color: "#7aabcc",
+                                message:":information_source: Hb Web Regression job has been started at ${params.Environment}. => (<${env.JOB_URL}${BUILD_NUMBER}|Build Link>)"
+                        )
+                    }
+                }
+    }
     stage('Checkout') {
       steps {
         checkout([$class: 'GitSCM',
@@ -55,6 +66,33 @@ pipeline {
             ]
           ])
         }
+        success {
+                      script {
+                        slackSend(
+                          channel: "hb-web-test-automation",
+                          color: "#70FD01",
+                          message: ":white_tick: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test success"
+                        )
+                      }
+                    }
+                    failure {
+                      script {
+                        slackSend(
+                          channel: "hb-web-test-automation",
+                          color: "#FF0000",
+                          message: ":alert: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test failed"
+                        )
+                      }
+                    }
+                    aborted {
+                      script {
+                        slackSend(
+                          channel: "hb-web-test-automation",
+                          color: "#BCBCBC",
+                          message: ":heavy_multiplication_x: <${env.JOB_URL}${BUILD_NUMBER}|Build Link> test aborted"
+                        )
+                      }
+                    }
       }
     }
   }
