@@ -37,6 +37,13 @@
   mvn clean test -Denv="local"
   ```
 
+## Docker
+
+* Go to project folder and run command
+```
+  docker-compose up -d
+```
+
 ## Allure
 
 * Run command

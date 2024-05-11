@@ -6,7 +6,7 @@ pipeline {
   parameters {
     string(name: 'TagName', defaultValue: "@smoke", description: 'Multiple Tag--> @verify_search_bar_default_value,@verify_all_footer_text , Single Tag--> @smoke')
     choice(name: 'Headless', choices: ['false', 'true'], description: '')
-    choice(name: 'Browser', choices: ['chrome', 'remote-chrome', 'firefox'], description: '')
+    choice(name: 'Browser', choices: ['chrome', 'remote-chrome', 'remote-firefox'], description: '')
     string(name: 'ProjectEnv', defaultValue: 'prod', description: '')
     string(name: 'ThreadCount', defaultValue: '1', description: '')
     string(name: 'Lang', defaultValue: 'tr', description: '')
