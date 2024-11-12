@@ -86,10 +86,11 @@
             <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${web.driver.manager.version}</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.17.0</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
@@ -114,6 +115,12 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
@@ -144,6 +151,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.32</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.source}</target>
@@ -165,7 +179,6 @@
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                     <properties>
-                        <!--suppress UnresolvedMavenProperty -->
                         <configurationParameters>
                             cucumber.junit-platform.naming-strategy=long
                             cucumber.execution.parallel.enabled=true
@@ -191,5 +204,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

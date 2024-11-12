@@ -3,6 +3,9 @@
     "product_list_page": {
       "review_count": "yorumsayisi",
       "best_selling": "coksatan"
+    },
+    "product_detail_page": {
+      "latest_review": "En yeni değerlendirme"
     }
   },
   "en": {

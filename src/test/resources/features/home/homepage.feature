@@ -5,7 +5,7 @@ Feature: Home Page Feature
   Scenario: Verify default value of search bar on homepage
     Then verify default value of search bar on homepage
 
- @verify_all_footer_text
+  @smoke @verify_all_footer_text
   Scenario: Verify all footer text on homepage
     Then verify all footer text on homepage
 

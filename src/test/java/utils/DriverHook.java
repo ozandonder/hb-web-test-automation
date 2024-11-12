@@ -4,7 +4,6 @@ import configs.BaseConfig;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -14,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import pages.BasePage;
 
 import java.io.File;
 import java.net.URL;
@@ -27,18 +27,26 @@ import static io.qameta.allure.Allure.addAttachment;
 
 public class DriverHook {
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    BaseConfig baseConfig = new BaseConfig();
+    private static BaseConfig baseConfig;
+    private static BasePage basePage;
+
+    private static BaseConfig getBaseConfig() {
+        return baseConfig == null ? new BaseConfig() : baseConfig;
+    }
+
+    private static BasePage getBasePage() {
+        return basePage == null ? new BasePage() : basePage;
+    }
 
     private DriverHook() {
-        String browser = baseConfig.getBrowser();
+        String browser = getBaseConfig().getBrowser();
         switch (browser) {
             case "chrome" -> {
                 try {
                     ChromeOptions options = new ChromeOptions();
-                    if (baseConfig.getHeadless()) options.addArguments("--headless=new");
+                    if (getBaseConfig().getHeadless()) options.addArguments("--headless=new");
                     options.addArguments("-incognito");
                     options.setBrowserVersion("stable");
-                    WebDriverManager.chromedriver().setup();
                     driver.set(new ChromeDriver(options));
                 } catch (Exception e) {
                     LoggingUtil.logError(browser + " not run. e -> ", e);
@@ -47,7 +55,7 @@ public class DriverHook {
             case "remote-chrome" -> {
                 try {
                     ChromeOptions options = new ChromeOptions();
-                    if (baseConfig.getHeadless()) {
+                    if (getBaseConfig().getHeadless()) {
                         options.addArguments("--headless=new");
                     }
                     options.addArguments("-incognito");
@@ -62,7 +70,7 @@ public class DriverHook {
             case "remote-firefox" -> {
                 try {
                     FirefoxOptions options = new FirefoxOptions();
-                    if (baseConfig.getHeadless()) {
+                    if (getBaseConfig().getHeadless()) {
                         options.addArguments("--headless=new");
                     }
                     FirefoxProfile firefoxProfile = new FirefoxProfile();
@@ -76,12 +84,16 @@ public class DriverHook {
             }
             default -> LoggingUtil.logWarning(browser + " not found");
         }
+        configureDriver();
+    }
+
+    private void configureDriver() {
         getDriver().manage().deleteAllCookies();
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(BaseConfig.SHORT_WAIT_TIMEOUT_SECONDS));
         getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(BaseConfig.MODERATE_WAIT_TIMEOUT_SECONDS));
         getDriver().manage().timeouts().scriptTimeout(Duration.ofSeconds(BaseConfig.MODERATE_WAIT_TIMEOUT_SECONDS));
         getDriver().manage().window().maximize();
-        getDriver().get(baseConfig.baseUrl());
+        getDriver().get(getBaseConfig().baseUrl());
     }
 
     public static WebDriver getDriver() {
@@ -91,7 +103,9 @@ public class DriverHook {
     @Before
     public static void setUpDriver(Scenario scenario) {
         LoggingUtil.logInfo(scenario.getName() + " -> scenario started");
+        UtilityMethods.resetAllGlobal();
         new DriverHook();
+        getBasePage().acceptOneTrust();
     }
 
     @After
@@ -112,6 +126,7 @@ public class DriverHook {
             LoggingUtil.logInfo("Scenario success => " + scenario.getName());
         }
         if (getDriver() != null) {
+            getDriver().close();
             getDriver().quit();
         }
     }

@@ -1,37 +1,20 @@
 package pages.home;
 
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import pages.BasePage;
 
 public class HomePage extends BasePage {
-    By BTN_SEARCH = By.xpath("//div[contains(@class, 'searchBoxOld') and text()='ARA']");
-    By IMG_SEARCH_BAR = By.xpath("//div[contains(@class, 'searchBoxOld')]/i");
-    By TXT_SEARCH_BAR = By.cssSelector("input[aria-controls='react-autowhatever-1']");
+    private final By IMG_SEARCH_BAR = By.xpath("//div[contains(@class, 'SearchBoxOld')]//i");
+    private final By TXT_SEARCH_BAR = By.cssSelector("input[data-test-id='search-bar-input']");
 
     public HomePage clickSearchIcon() {
         click(IMG_SEARCH_BAR);
         return this;
     }
 
-    public void clickSearchBar() {
-        click(BTN_SEARCH);
-    }
-
     public HomePage fillSearchText(String searchText) {
+        waitUntilElementVisible(TXT_SEARCH_BAR);
         type(TXT_SEARCH_BAR, searchText, true);
         return this;
-    }
-
-    public void verifyDefaultValueOfSearchBar() {
-        Assertions.assertEquals(1, 2, "Default value of search bar incorrect");
-    }
-
-    public void verifyAllFooterText() {
-        Assertions.assertTrue(true, "Footer text incorrect");
-    }
-
-    public void verifyAgreementPopup() {
-        Assertions.assertTrue(true, "Agreement popup not found");
     }
 }

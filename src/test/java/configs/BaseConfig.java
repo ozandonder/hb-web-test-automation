@@ -22,7 +22,7 @@ public class BaseConfig {
     }
 
     public String getBrowser() {
-        return browser != null ? browser : "remote-chrome";
+        return browser != null ? browser : "chrome";
     }
 
     public String getLocale() { return locale != null ? locale : "tr"; }

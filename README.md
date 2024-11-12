@@ -22,7 +22,7 @@
 * Run with tags
 
   ```
-  mvn clean test -Dtest="CucumberRunnerTest" -D"cucumber.filter.tags=@successfully_login" -DthreadCount=1 
+  mvn clean test -Dtest="CucumberRunnerTest" -D"cucumber.filter.tags=@verify_search_bar_default_value" -DthreadCount=1 
   ```
 
 * Run with groups
@@ -249,16 +249,6 @@ Example:
      "en": {
       }
    }
-```
-
-# Commit ve PR structure
-
-```
-* Branch isimleri işin ticket idsi ile açılmalı. Örnek: QA-74
-* Mümkün olduğunca commitler anlaşılır açıklamalar ile commitlenmeli.
-* Commit atılırken mümkün olduğunca küçük parçalar halinde ilerlenmeli(Atomic). Böylelikle rollback daha kolay olacaktır.
-* PR QA ekibinden zorunlu review ırların review etmesinden sonra master a mergelenecektir.
-* Master'a mergelenmeden önce pipeline ilgili branch üzerinde çalıştırılacak ve herhangi bir problem olmadığı doğrulanacaktır.
 ```
 
 ## Tagging
